@@ -1,0 +1,72 @@
+/* Tavo · Ответ бота — панель под сообщением игрока (варианты ответа бота) */
+@keyframes ti3-sheen{0%{left:-70%}55%{left:130%}100%{left:130%}}
+@keyframes ti3-flap{0%,100%{transform:scaleX(1)}50%{transform:scaleX(.15)}}
+@keyframes ti3-f1{0%{left:-10%;transform:translateY(4px) rotate(-8deg)}50%{left:52%;transform:translateY(-14px) rotate(8deg)}100%{left:110%;transform:translateY(2px) rotate(-5deg)}}
+@keyframes ti3-f2{0%{left:110%;transform:translateY(-6px) rotate(8deg)}50%{left:46%;transform:translateY(14px) rotate(-10deg)}100%{left:-10%;transform:translateY(0) rotate(6deg)}}
+@keyframes ti3-f3{0%{left:-12%;transform:translateY(10px) rotate(0deg)}50%{left:60%;transform:translateY(-10px) rotate(16deg)}100%{left:112%;transform:translateY(6px) rotate(-8deg)}}
+@keyframes ti3-f4{0%{left:108%;transform:translateY(8px) rotate(-10deg)}50%{left:40%;transform:translateY(-12px) rotate(12deg)}100%{left:-12%;transform:translateY(4px) rotate(-6deg)}}
+@keyframes ti3-f5{0%{left:-8%;transform:translateY(-4px) rotate(6deg)}50%{left:55%;transform:translateY(16px) rotate(-14deg)}100%{left:110%;transform:translateY(-2px) rotate(8deg)}}
+@keyframes ti3-f6{0%{left:112%;transform:translateY(2px) rotate(10deg)}50%{left:48%;transform:translateY(-16px) rotate(-8deg)}100%{left:-10%;transform:translateY(6px) rotate(10deg)}}
+@keyframes ti3-shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+@keyframes ti3-in{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes ti3-blik{0%{background-position:170% 0}100%{background-position:-170% 0}}
+@keyframes ti3-cap{0%,100%{opacity:.5}50%{opacity:1}}
+
+.ti3-panel{margin-top:10px}
+.ti3-head{display:flex;align-items:center;justify-content:space-between;gap:8px;cursor:pointer;user-select:none;-webkit-user-select:none}
+.ti3-title{font-size:12px;font-weight:600;letter-spacing:.02em;opacity:.85;line-height:1.2}
+.ti3-count{font-size:10px;font-weight:500;opacity:.5}
+.ti3-toggle{background:none;border:none;color:inherit;font-size:11px;cursor:pointer;opacity:.6;transition:transform .25s,opacity .15s;padding:2px 4px}
+.ti3-head:hover .ti3-toggle{opacity:1}
+.ti3-panel.collapsed .ti3-toggle{transform:rotate(-90deg)}
+.ti3-panel.collapsed .ti3-head{opacity:.7}
+.ti3-panel.collapsed .ti3-title{font-size:11px;font-weight:500}
+.ti3-body{margin-top:10px}
+.ti3-panel.collapsed .ti3-body{display:none}
+
+.ti3-btn{position:relative;overflow:hidden;display:inline-block;padding:8px 15px;border-radius:12px;border:1px solid color-mix(in srgb,currentColor 24%,transparent);background:color-mix(in srgb,currentColor 9%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:inherit;font:inherit;font-size:12px;font-weight:600;letter-spacing:.02em;cursor:pointer}
+.ti3-btn-txt{position:relative;z-index:1}
+.ti3-btn::after{content:'';position:absolute;top:0;left:-70%;width:45%;height:100%;background:linear-gradient(115deg,transparent,color-mix(in srgb,currentColor 45%,transparent),transparent);transform:skewX(-20deg);animation:ti3-sheen 3.6s ease-in-out infinite;pointer-events:none}
+.ti3-btn:hover{background:color-mix(in srgb,currentColor 16%,transparent)}
+.ti3-btn:disabled{cursor:default;opacity:.6}
+
+.ti3-cap{font-size:12px;opacity:.8;margin-bottom:8px;animation:ti3-cap 1.3s ease-in-out infinite}
+.ti3-skel{height:70px;border-radius:12px;margin-bottom:8px;background:linear-gradient(100deg,color-mix(in srgb,currentColor 5%,transparent) 20%,color-mix(in srgb,currentColor 16%,transparent) 50%,color-mix(in srgb,currentColor 5%,transparent) 80%);background-size:200% 100%;animation:ti3-shimmer 1.15s linear infinite}
+
+.ti3-view{overflow:hidden;border-radius:14px}
+.ti3-track{display:flex;transition:transform .32s cubic-bezier(.4,0,.2,1);will-change:transform;touch-action:pan-y}
+.ti3-card{position:relative;overflow:hidden;flex:0 0 100%;box-sizing:border-box;cursor:pointer;padding:12px 14px;border-radius:14px;border:1px solid color-mix(in srgb,currentColor 15%,transparent);border-left:3px solid var(--acc,currentColor);background:linear-gradient(160deg,color-mix(in srgb,currentColor 9%,transparent),color-mix(in srgb,currentColor 4%,transparent));-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);animation:ti3-in .4s ease both}
+.ti3-card::before{content:'';position:absolute;inset:0;border-radius:inherit;background:linear-gradient(115deg,transparent 42%,color-mix(in srgb,currentColor 12%,transparent) 50%,transparent 58%);background-size:250% 100%;animation:ti3-blik 5s ease-in-out infinite;pointer-events:none}
+.ti3-card>*{position:relative;z-index:1}
+.ti3-flies{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.ti3-fly{position:absolute;left:0;display:block;color:var(--acc,currentColor);will-change:left,transform}
+.ti3-bf{display:block;width:100%;height:100%;overflow:visible;fill:currentColor;filter:drop-shadow(0 0 3px color-mix(in srgb,var(--acc,currentColor) 45%,transparent))}
+.ti3-bf .wl,.ti3-bf .wr{transform-origin:50px 50px;animation:ti3-flap var(--fd,.26s) ease-in-out infinite}
+.ti3-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;padding:3px 9px;border-radius:999px;color:var(--acc,currentColor);background:color-mix(in srgb,var(--acc,currentColor) 16%,transparent);border:1px solid color-mix(in srgb,var(--acc,currentColor) 35%,transparent);margin-bottom:8px}
+.ti3-card b{display:block;font-size:14px;margin-bottom:3px}
+.ti3-card p{margin:0;font-size:13px;opacity:.85;line-height:1.45}
+.ti3-go{align-self:flex-start;margin-top:10px;padding:6px 12px;border-radius:10px;border:1px solid color-mix(in srgb,var(--acc,currentColor) 40%,transparent);background:color-mix(in srgb,var(--acc,currentColor) 12%,transparent);color:inherit;font:inherit;font-size:12px;font-weight:600;cursor:pointer;transition:background .15s}
+.ti3-go:hover{background:color-mix(in srgb,var(--acc,currentColor) 22%,transparent)}
+.ti3-go:disabled{opacity:.6;cursor:default}
+
+.ti3-ctrls{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:10px}
+.ti3-nav{width:26px;height:26px;border-radius:999px;border:1px solid color-mix(in srgb,currentColor 22%,transparent);background:color-mix(in srgb,currentColor 7%,transparent);color:inherit;font-size:15px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.ti3-nav:hover{background:color-mix(in srgb,currentColor 16%,transparent)}
+.ti3-dots{display:flex;gap:6px;align-items:center}
+.ti3-dot{width:7px;height:7px;border-radius:999px;background:color-mix(in srgb,currentColor 25%,transparent);cursor:pointer;transition:all .2s}
+.ti3-dot.on{width:18px;background:color-mix(in srgb,currentColor 65%,transparent)}
+.ti3-reroll{display:block;margin:10px auto 0;padding:7px 14px;border-radius:11px;border:1px solid color-mix(in srgb,currentColor 20%,transparent);background:color-mix(in srgb,currentColor 7%,transparent);color:inherit;font:inherit;font-size:12px;font-weight:600;cursor:pointer;transition:background .15s}
+.ti3-reroll:hover{background:color-mix(in srgb,currentColor 14%,transparent)}
+.ti3-reroll:disabled{opacity:.6;cursor:default}
+.ti3-mystery{border-style:dashed;align-items:center;text-align:center}
+.ti3-mystery .ti3-q{font-size:34px;line-height:1;margin:2px 0 6px;filter:drop-shadow(0 0 8px color-mix(in srgb,var(--acc,currentColor) 55%,transparent))}
+.ti3-risk{margin-top:12px;padding:8px 18px;border-radius:11px;border:1px solid color-mix(in srgb,var(--acc,currentColor) 55%,transparent);background:color-mix(in srgb,var(--acc,currentColor) 20%,transparent);color:inherit;font:inherit;font-size:13px;font-weight:700;cursor:pointer;transition:background .15s}
+.ti3-risk:hover{background:color-mix(in srgb,var(--acc,currentColor) 32%,transparent)}
+.ti3-risk:disabled{opacity:.7;cursor:default}
+.ti3-peek{margin-top:8px;background:none;border:none;color:inherit;opacity:.6;font:inherit;font-size:11px;text-decoration:underline;text-underline-offset:3px;cursor:pointer;transition:opacity .15s}
+.ti3-peek:hover{opacity:.9}
+.ti3-peek:disabled{opacity:.5;cursor:default}
+.ti3-teaser{display:none;margin-top:8px;font-size:12px;font-style:italic;line-height:1.4;color:color-mix(in srgb,var(--acc,currentColor) 85%,#fff);opacity:.9;animation:ti3-in .3s ease both}
+
+/* панель — сиблинг .mes в ленте #chat: боковые отступы как у сообщений */
+.tavo-reply-panel{padding:0 15px 6px;box-sizing:border-box;width:100%}
