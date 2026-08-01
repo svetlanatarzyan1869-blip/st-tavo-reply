@@ -151,7 +151,10 @@
     panel.className = 'ti3-panel ' + PANEL_CLASS;
     panel.innerHTML =
       '<div class="ti3-head"><span class="ti3-title">🎬 варианты ответа бота<span class="ti3-count"></span></span>'
-      + '<button class="ti3-toggle" type="button" aria-label="свернуть">▾</button></div>'
+      + '<span class="ti3-head-btns">'
+      + '<button class="ti3-skip" type="button" title="пропустить — пусть бот ответит сам" aria-label="пропустить">⏭</button>'
+      + '<button class="ti3-toggle" type="button" aria-label="свернуть">▾</button>'
+      + '</span></div>'
       + '<div class="ti3-body"><div class="ti3-out"></div></div>';
     return panel;
   }
@@ -162,8 +165,27 @@
 
     var head = panel.querySelector('.ti3-head');
     var toggle = panel.querySelector('.ti3-toggle');
+    var skip = panel.querySelector('.ti3-skip');
     var countEl = panel.querySelector('.ti3-count');
     var out = panel.querySelector('.ti3-out');
+
+    // ⏭ пропустить развилку — пусть бот ответит сам (обычная генерация)
+    if (skip) {
+      skip.addEventListener('click', async function (e) {
+        e.stopPropagation();
+        skip.disabled = true; skip.textContent = '⏳';
+        try {
+          window.__tavoReplyAllowNormal = true; // разрешаем нашему перехватчику пропустить этот ответ
+          panel.remove();
+          await ctx().generate('normal');
+          pokeAll();
+        } catch (err) {
+          window.__tavoReplyAllowNormal = false;
+          toast('Ошибка: ' + ((err && err.message) || err));
+          scheduleRefresh();
+        }
+      });
+    }
 
     function setCount(n) { countEl.textContent = n ? (' · ' + n) : ''; }
     function setCollapsed(v) { panel.classList.toggle('collapsed', !!v); setCollapsedStore(idx, v ? 1 : 0); }
@@ -312,6 +334,7 @@
     if (!INTERCEPT_AUTO_REPLY) return;
     if (dryRun) return;
     if (type !== 'normal') return; // наши quiet-генерации не трогаем
+    if (window.__tavoReplyAllowNormal) { window.__tavoReplyAllowNormal = false; return; } // ⏭ пропуск разрешён
     try { ctx().stopGeneration(); } catch (e) { console.warn('[tavo-reply] stop fail', e); }
     scheduleRefresh();
   }
