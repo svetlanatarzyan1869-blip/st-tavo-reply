@@ -125,13 +125,23 @@
   }
 
   function parse(raw) {
-    return String(raw || '').split(/\r?\n/).map(function (s) { return s.trim(); })
-      .filter(function (s) { return s.indexOf('::') > -1; })
-      .map(function (l) {
-        var p = l.split('::').map(function (x) { return x.trim(); });
-        if (p.length >= 3) { return { type: p[0].replace(/^[-*\d.\s]+/, ''), title: p[1], desc: p.slice(2).join(' :: ') }; }
-        return { type: '', title: p[0].replace(/^[-*\d.\s]+/, ''), desc: p.slice(1).join(' :: ') };
-      }).slice(0, VARIANTS_COUNT);
+    try { console.log('[tavo] сырой ответ модели:\n' + raw); } catch (_e) {}
+    var text = String(raw || '').replace(/```+/g, '').replace(/<\/?[a-zA-Z][^>]*>/g, ' ');
+    var lines = text.split(/\r?\n/).map(function (s) { return s.trim(); }).filter(Boolean);
+    function strip(x) { return x.replace(/^[\-*\u2022\d.\)\s]+/, '').trim(); }
+    function pick(sep) {
+      var res = [];
+      lines.forEach(function (l) {
+        var parts = l.split(sep).map(strip).filter(Boolean);
+        if (parts.length >= 3) res.push({ type: parts[0], title: parts[1], desc: parts.slice(2).join(' ') });
+        else if (parts.length === 2) res.push({ type: '', title: parts[0], desc: parts[1] });
+      });
+      return res;
+    }
+    var out = pick('::');
+    if (!out.length) out = pick(/\s[\u2014\u2013|]\s/);
+    if (!out.length) out = pick(/\s-\s/);
+    return out.slice(0, VARIANTS_COUNT);
   }
 
   // ---- хранилище: в message.extra сообщения игрока ----
@@ -268,16 +278,22 @@
       out.querySelector('.ti3-btn').addEventListener('click', function () { generate(); });
     }
 
+    function showRetry(msg) {
+      out.innerHTML = '<div class="ti3-card"><p>' + msg + '</p></div>'
+        + '<button class="ti3-reroll" type="button">🔄 попробовать снова</button>';
+      out.querySelector('.ti3-reroll').addEventListener('click', function () { generate(); });
+    }
+
     async function generate() {
       setCollapsed(false);
       out.innerHTML = '<div class="ti3-cap">✨ подбираю варианты ответа…</div><div class="ti3-skel"></div><div class="ti3-skel"></div><div class="ti3-skel"></div>';
       try {
         var raw = await genOptions();
         var items = parse(raw);
-        if (!items.length) { out.innerHTML = '<div class="ti3-card"><p>Пусто — попробуй ещё раз 🔄</p></div>'; return; }
+        if (!items.length) { showRetry('Пусто — модель ответила не по форме (глянь консоль F12).'); return; }
         setIdeas(idx, items);
         renderCards(items);
-      } catch (e) { out.innerHTML = '<div class="ti3-card"><p>⚠️ ' + esc((e && e.message) || e) + '</p></div>'; }
+      } catch (e) { showRetry('⚠️ ' + esc((e && e.message) || e)); }
     }
 
     toggle.addEventListener('click', function (e) { e.stopPropagation(); setCollapsed(!panel.classList.contains('collapsed')); });
