@@ -37,14 +37,17 @@
     + 'might surprisingly respond. No spoilers, no story, no character post, no reasoning, no quotes. CRITICAL: reply '
     + 'STRICTLY in the SAME language as the transcript (if it is in Russian, reply in Russian).';
 
-  var STEER_TPL = '[Now write the character\'s reply to the user\'s latest message, taking it in THIS direction: {DIR}. '
-    + 'Stay fully in-character as the character(s) and the world, advance the scene vividly, and end on a hook that '
-    + 'demands the user react. Never speak or act for the user. Match the established style, POV and formatting.]';
+  var STEER_TPL = '[DIRECTOR NOTE — HIGHEST priority for THIS turn, overriding any pacing or "change is slow" rules. '
+    + 'Write the character\'s reply to the user\'s latest message, taking it in THIS direction: {DIR}. Move the scene FORWARD with '
+    + 'genuinely new content — do NOT repeat, rephrase or lightly rewrite any earlier message. Stay fully in-character, show the '
+    + 'development vividly, and end on a hook that demands the user react. Never speak or act for the user. Keep the established '
+    + 'voice, POV and required format.]';
 
-  var RISK_PROMPT = '[Now write the character\'s reply to the user\'s latest message with a genuinely SURPRISING, '
-    + 'unexpected turn the reader would NOT predict — a twist, an intrusion, or a reversal — while staying true to the '
-    + 'established characters, tone, and world. Be bold but coherent, advance the scene, and end on a hook. Never speak '
-    + 'or act for the user. Match the established style, POV and formatting.]';
+  var RISK_PROMPT = '[DIRECTOR NOTE — HIGHEST priority for THIS turn, overriding any pacing or "change is slow" rules. '
+    + 'Write the character\'s reply to the user\'s latest message with a genuinely SURPRISING, unexpected turn the reader would NOT '
+    + 'predict — a twist, an intrusion, or a reversal — do NOT repeat or rephrase any earlier message. Stay true to the established '
+    + 'characters, tone and world, advance vividly, and end on a hook. Never speak or act for the user. Keep the established voice, '
+    + 'POV and required format.]';
 
   var TYPES = {
     'драма': { e: '🔥', c: '#ff5c7a' }, 'драм': { e: '🔥', c: '#ff5c7a' },
