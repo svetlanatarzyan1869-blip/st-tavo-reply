@@ -100,16 +100,16 @@
     }).join('\n');
   }
 
+  // Через полный конвейер (generateQuietPrompt) — с карточкой/джейлбреком пресета, иначе «голый»
+  // generateRaw режется контент-фильтром провайдера (напр. Gemini: PROHIBITED_CONTENT / prompt_blocked).
   async function genOptions() {
-    var c = ctx();
-    var user = 'Recent scene transcript:\n\n' + buildTranscript() + '\n\nGive me EXACTLY ' + VARIANTS_COUNT
-      + ' options for how the character could reply to the player\'s latest message.';
-    return await c.generateRaw({ prompt: user, systemPrompt: OPTIONS_SYSTEM });
+    var instr = '[OOC planning task — do NOT write story prose and do NOT continue the roleplay. '
+      + OPTIONS_SYSTEM + ' Give EXACTLY ' + VARIANTS_COUNT + ' options for the bot\'s reply now, as ' + VARIANTS_COUNT + ' lines only.]';
+    return await ctx().generateQuietPrompt({ quietPrompt: instr, quietToLoud: false });
   }
   async function genTeaser() {
-    var c = ctx();
-    var user = 'Scene transcript:\n\n' + buildTranscript() + '\n\nGive the one-line teaser now, only the short phrase.';
-    return await c.generateRaw({ prompt: user, systemPrompt: TEASER_SYSTEM });
+    var instr = '[OOC task — do NOT continue the roleplay. ' + TEASER_SYSTEM + ' Output only the short teaser phrase now.]';
+    return await ctx().generateQuietPrompt({ quietPrompt: instr, quietToLoud: false });
   }
   // Полный ответ бота: генерим «громко» с инструкцией, дописываем как сообщение персонажа (первый ответ).
   async function genReply(quietPrompt) {
