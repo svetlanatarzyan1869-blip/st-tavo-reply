@@ -1,10 +1,10 @@
 {
-  "display_name": "Tavo · Варианты ответа бота",
-  "loading_order": 102,
-  "js": "index.js",
-  "css": "style.css",
-  "author": "Люба (порт из Tavo)",
-  "version": "1.0.0",
-  "homePage": "https://t.me/+3qj7eHn2WWQ5ZjNi",
-  "auto_update": false
+    "display_name": "Tavo · Варианты ответа бота",
+    "loading_order": 102,
+    "js": "index.js",
+    "css": "style.css",
+    "author": "Svetlyachok",
+    "version": "1.0.1",
+    "homePage": "https://github.com/svetlanatarzyan1869-blip/st-tavo-reply",
+    "auto_update": false
 }
