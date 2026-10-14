@@ -1,10 +1,9 @@
 {
-    "display_name": "Tavo · Варианты ответа бота",
-    "loading_order": 102,
-    "js": "index.js",
-    "css": "style.css",
-    "author": "Svetlyachok",
-    "version": "1.0.1",
-    "homePage": "https://github.com/svetlanatarzyan1869-blip/st-tavo-reply",
-    "auto_update": false
+  "display_name": "Tavo · Варианты ответа бота (отключено)",
+  "loading_order": 102,
+  "js": "index.js",
+  "author": "Svetlyachok",
+  "version": "2.0.0",
+  "auto_update": true,
+  "homePage": "https://github.com/svetlanatarzyan1869-blip/st-tavo-reply"
 }
